@@ -19,6 +19,9 @@ import BDirectorRouter from "./src/Route/Aboutus/BDirectors.js";
 import CProfileRouter from "./src/Route/Aboutus/CProfile.js";
 import CSRRouter from "./src/Route/Aboutus/CSR.js";
 import MAndVRouter from "./src/Route/Aboutus/MAndV.js";
+import HomeAboutrouter from "./src/Route/Home/About.js";
+import HomeBannerRouter from "./src/Route/Home/Banner.js";
+import HomeDirectorRouter from "./src/Route/Home/Directors.js";
 
 
 
@@ -87,6 +90,10 @@ app.use('/api/v1/about/bdirector', BDirectorRouter);
 app.use('/api/v1/about/cprofile', CProfileRouter);
 app.use('/api/v1/about/csr', CSRRouter);
 app.use('/api/v1/about/mandv', MAndVRouter);
+app.use('/api/v1/home/about', HomeAboutrouter);
+app.use('/api/v1/home/banner', HomeBannerRouter);
+app.use('/api/v1/home/director', HomeDirectorRouter);
+
 
 
 

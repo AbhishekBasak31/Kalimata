@@ -14,7 +14,7 @@ const HomeGrowthSchema = new SCHEMA(
       required: true,
      
    },
-    Milestone:{
+    Mstone:{
         type: String,
       required: true,
      
@@ -29,11 +29,6 @@ const HomeGrowthSchema = new SCHEMA(
         required: true,
    },
     Desc:{
-        type: String,
-      required: true,
-     
-   }, 
-   Img:{
         type: String,
       required: true,
      
