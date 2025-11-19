@@ -11,6 +11,14 @@ import ContactRouter from "./src/Route/User.js";
 import FooterRouter from "./src/Route/Footer.js";
 import FactAddRouter from "./src/Route/FactAddress.js";
 import Catagoryrouter from "./src/Route/Product/Catagory.js";
+import SubCatagoryRouter from "./src/Route/Product/Subcatagory.js";
+import ProductRouter from "./src/Route/Product/Product.js";
+import BlogRouter from "./src/Route/Blog/Blog.js";
+import OurValueRouter from "./src/Route/Blog/OurValue.js";
+import BDirectorRouter from "./src/Route/Aboutus/BDirectors.js";
+import CProfileRouter from "./src/Route/Aboutus/CProfile.js";
+import CSRRouter from "./src/Route/Aboutus/CSR.js";
+import MAndVRouter from "./src/Route/Aboutus/MAndV.js";
 
 
 
@@ -71,6 +79,15 @@ app.use('/api/v1/contact', ContactRouter);
 app.use('/api/v1/footer', FooterRouter);
 app.use('/api/v1/factAdd', FactAddRouter);
 app.use('/api/v1/product/catagory', Catagoryrouter);
+app.use('/api/v1/product/subcatagory', SubCatagoryRouter);
+app.use('/api/v1/product', ProductRouter);
+app.use('/api/v1/blog', BlogRouter);
+app.use('/api/v1/blog/ourvalue', OurValueRouter);
+app.use('/api/v1/about/bdirector', BDirectorRouter);
+app.use('/api/v1/about/cprofile', CProfileRouter);
+app.use('/api/v1/about/csr', CSRRouter);
+app.use('/api/v1/about/mandv', MAndVRouter);
+
 
 
 

@@ -2,7 +2,7 @@
 import mongoose from "mongoose";
 import { SCHEMA } from "../../Utils/Constant.js";
 
-const CSRSchema = new SCHEMA(
+const MandVSchema = new SCHEMA(
   {
   
       Img1:{
@@ -39,5 +39,5 @@ const CSRSchema = new SCHEMA(
   { timestamps: true }
 );
 
-export const CSR = mongoose.model("CSR", CSRSchema);
-export default CSR;
+export const MandV = mongoose.model("MandV", MandVSchema);
+export default MandV;

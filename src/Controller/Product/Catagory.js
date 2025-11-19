@@ -1,6 +1,9 @@
 // Controller/CatagoryController.js
 import mongoose from "mongoose";
 import Catagory from "../../Model/Product/Catagory.js"; // adjust path if needed
+import Subcatagory from "../../Model/Product/Subcatagory.js";
+import Product from "../../Model/Product/Product.js";
+
 import uploadOnCloudinary from "../../Utils/Cloudinary.js"; // adjust path to your cloudinary util
 
 // helper to normalize values
@@ -179,10 +182,12 @@ export const updateCatagory = async (req, res) => {
   }
 };
 
+// DELETE Catagory (cascade: subcatagories + products)
 export const deleteCatagory = async (req, res) => {
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
+
     const { id } = req.params;
     if (!id) {
       if (session.inTransaction()) await session.abortTransaction();
@@ -193,15 +198,37 @@ export const deleteCatagory = async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid ID" });
     }
 
+    // ensure category exists
     const existing = await Catagory.findById(id).session(session);
     if (!existing) {
       if (session.inTransaction()) await session.abortTransaction();
       return res.status(404).json({ success: false, message: "Catagory not found" });
     }
 
+    // 1) find subcat ids belonging to this category
+    const subcats = await Subcatagory.find({ Catagory: id }).select("_id").session(session).lean();
+    const subcatIds = subcats.map(s => s._id);
+
+    // 2) delete products that belong to this category OR to any subcategory of this category
+    //    (CatagoryId === id) OR (SubcatagoryId in subcatIds)
+    const prodQuery = {
+      $or: [
+        { CatagoryId: id },
+        ...(subcatIds.length ? [{ SubcatagoryId: { $in: subcatIds } }] : [])
+      ]
+    };
+    await Product.deleteMany(prodQuery).session(session);
+
+    // 3) delete subcatagories
+    if (subcatIds.length) {
+      await Subcatagory.deleteMany({ _id: { $in: subcatIds } }).session(session);
+    }
+
+    // 4) finally delete the category
     await Catagory.findByIdAndDelete(id).session(session);
+
     await session.commitTransaction();
-    return res.status(200).json({ success: true, message: "Catagory deleted" });
+    return res.status(200).json({ success: true, message: "Catagory and related Subcatagories & Products deleted" });
   } catch (err) {
     try { if (session.inTransaction()) await session.abortTransaction(); } catch (e) { console.error("abortTransaction error:", e); }
     console.error("deleteCatagory error:", err);
@@ -210,3 +237,4 @@ export const deleteCatagory = async (req, res) => {
     session.endSession();
   }
 };
+
