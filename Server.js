@@ -22,6 +22,7 @@ import MAndVRouter from "./src/Route/Aboutus/MAndV.js";
 import HomeAboutrouter from "./src/Route/Home/About.js";
 import HomeBannerRouter from "./src/Route/Home/Banner.js";
 import HomeDirectorRouter from "./src/Route/Home/Directors.js";
+import HomeGrowthRouter from "./src/Route/Home/Growth.js";
 
 
 
@@ -51,10 +52,14 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174", // add more if needed
   "http://localhost:8080", // add more if needed
+  "http://localhost:8086", // add more if needed
+
 
   `http://${localIP}:5173`,
   `http://${localIP}:5174`,
   `http://${localIP}:8080`, // add more if needed
+  `http://${localIP}:8086`, // add more if needed
+
    // add more if needed
 ];
 
@@ -93,6 +98,9 @@ app.use('/api/v1/about/mandv', MAndVRouter);
 app.use('/api/v1/home/about', HomeAboutrouter);
 app.use('/api/v1/home/banner', HomeBannerRouter);
 app.use('/api/v1/home/director', HomeDirectorRouter);
+app.use('/api/v1/home/growth', HomeGrowthRouter);
+app.use('/api/v1/home/mandv', MAndVRouter);
+
 
 
 

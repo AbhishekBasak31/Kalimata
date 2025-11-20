@@ -13,7 +13,6 @@ import { authenticate } from "../../Middleware/AuthMiddleware.js"; // optional a
 const OurValueRouter = express.Router();
 
 OurValueRouter.post("/", authenticate, createOurvalue);
-
 OurValueRouter.get("/", getOurvalue);
 OurValueRouter.get("/:id", getOurvalue);
 OurValueRouter.patch("/:id", authenticate, updateOurvalue);

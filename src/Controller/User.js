@@ -6,6 +6,20 @@ import { User } from "../Model/User.js";
 // import { Footer } from "../Model/Footer.js";
 import { Enquiry } from "../Model/Enquiry.js";
 import { Contact } from "../Model/Contact.js";
+import Footer from "../Model/Footer.js";
+import Catagory from "../Model/Product/Catagory.js";
+import Product from "../Model/Product/Product.js";
+import Subcatagory from "../Model/Product/Subcatagory.js";
+import HomeAbout from "../Model/Home/About.js";
+import HomeBanner from "../Model/Home/Banner.js";
+import HomeDirector from "../Model/Home/Directors.js";
+import HomeGrowth from "../Model/Home/Growth.js";
+import Blog from "../Model/Blog/Blog.js";
+import Ourvalue from "../Model/Blog/Ourvalue.js";
+import Bdirector from "../Model/Aboutus/BDirector.js";
+import CProfile from "../Model/Aboutus/CProfile.js";
+import CSR from "../Model/Aboutus/CSR.js";
+import MandV from "../Model/Aboutus/MandV.js";
 
 
 
@@ -195,28 +209,27 @@ const fetchDocs = async (model, { userId = null, role = null, populate = [], lim
 
 export const dashboardData = async (req, res) => {
   try {
+    // prepare all tasks (run in parallel)
     const tasks = {
-      Service: fetchDocs(Service, { populate: ["section"] }),
-      Review: fetchDocs(Review , { populate: ["section"] }),
-      Footer: fetchDocs(Footer),
+      Footer: fetchDocs(Footer, {populate:["factoryaddress"]}),
       Enquiry: fetchDocs(Enquiry),
       Contact: fetchDocs(Contact),
-      ServiceSection: fetchDocs(ServiceSection, { populate: ["Services"] }),
-      WCU: fetchDocs(WCU),
-      ReviewSection: fetchDocs(ReviewSection, { populate: ["Reviews"] }),
-      Multiproject: fetchDocs(Multiproject),
-      Founder: fetchDocs(Founder),
-      Brand: fetchDocs(Brand),
-      Banner: fetchDocs(Banner),
-      About: fetchDocs(About),
-      ContactSection: fetchDocs(ContactSection),
-      AboutBanner: fetchDocs(AboutBanner),
-      MissionVision: fetchDocs(MissionVision),
-      Ourstory: fetchDocs(Ourstory),
-      Ourvalues: fetchDocs(Ourvalues),
+      Catagory: fetchDocs(Catagory), // adjust populate field names to match your schema
+      Product: fetchDocs(Product, { populate: ["CatagoryId", "SubcatagoryId"] }),
+      Subcatagory: fetchDocs(Subcatagory,{populate:["Catagory"]}),
+      HomeAbout: fetchDocs(HomeAbout),
+      HomeBanner: fetchDocs(HomeBanner),
+      HomeDirector: fetchDocs(HomeDirector),
+      HomeGrowth: fetchDocs(HomeGrowth),
+      Blog: fetchDocs(Blog, ), // optional populate — remove if not applicable
+      Ourvalue: fetchDocs(Ourvalue),
+      Bdirector: fetchDocs(Bdirector),
+      CProfile: fetchDocs(CProfile),
+      CSR: fetchDocs(CSR),
+      MandV: fetchDocs(MandV), // Mission & Vision (keeps your naming)
     };
 
-    // Run all queries in parallel
+    // Run all queries in parallel and capture results
     const results = await Promise.allSettled(Object.values(tasks));
 
     const keys = Object.keys(tasks);
@@ -228,12 +241,11 @@ export const dashboardData = async (req, res) => {
         data[key] = result.value;
       } else {
         console.error(`Dashboard fetch failed for ${key}:`, result.reason);
-        data[key] = []; // default empty
+        data[key] = []; // default to empty array on error
       }
     });
 
     return res.status(200).json({ data });
-
   } catch (err) {
     console.error("Dashboard Error:", err);
     return res.status(500).json({ error: "Internal Server Error" });

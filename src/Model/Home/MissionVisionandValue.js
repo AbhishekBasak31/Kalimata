@@ -36,17 +36,17 @@ const HomeMissionVisionandValueSchema = new SCHEMA(
    },
    Img1:{
         type: String,
-      required: true,
+      required: false,
      
    },  
    Img2:{
         type: String,
-      required: true,
+      required: false,
      
    }, 
    Img3:{
         type: String,
-      required: true,
+      required: false,
      
    }, 
   },
